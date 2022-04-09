@@ -1,4 +1,5 @@
 import numpy
+import matplotlib
 
 def factorial(x):
     if x<=1:
