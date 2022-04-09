@@ -5,4 +5,5 @@ def f(x):
         return max(1,x)
     return x*f(x-1)
 
-print(f(10))
+x = int(input("Enter a number: "))
+print(f(x)) 
