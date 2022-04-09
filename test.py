@@ -1,4 +1,5 @@
 import numpy
+import matplotlib
 
 def f(x):
     if x<=1:
