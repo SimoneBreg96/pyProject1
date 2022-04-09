@@ -7,6 +7,8 @@ def factorial(x):
     return x*factorial(x-1)
 
 def fibonacci(n):
+    if(n<=2):
+        return [1,2]
     t_prev = 1
     t = 2
     while(t<n):
