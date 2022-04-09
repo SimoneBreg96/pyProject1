@@ -6,5 +6,15 @@ def factorial(x):
         return max(1,x)
     return x*factorial(x-1)
 
+def newFunction(n):
+    t_prev = 1
+    t = 2
+    while(t<n):
+        temp = t
+        t = t+t_prev
+        t_prev = temp
+    return [t_prev,t]
+
 x = int(input("Enter a number: "))
-print(factorial(x)) 
+print("factorial:",factorial(x)) 
+print("Fibonacci previous, present and following number:", newFunction(x))
