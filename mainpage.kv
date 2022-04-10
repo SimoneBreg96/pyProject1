@@ -7,19 +7,28 @@
         orientation: 'vertical'
         BoxLayout:
             id: name
+            size_hint_y: 0.2
             Label:
                 text: "Input"
             TextInput: 
+                text: ""
                 id: inputLabel
                 multiline: False
         BoxLayout:
-            id: button
-            Button:
-                id: submit_button
-                text: "Enter"
-                color: [1,0,0]
-                on_press:
-                    root.btn_clk()
-        Label:
-            id: result
-            text: "ehi"
+            id: buttons
+            BoxLayout:
+                orientation: 'horizontal'
+                Button:
+                    id: submit_button
+                    text: "Enter"
+                    on_release:
+                        root.btn_clk()
+                Button:
+                    id: clear_button
+                    text: "Clear"
+                    on_release:
+                        root.clear()
+        BoxLayout:
+            Label:
+                id: result
+                text: ""

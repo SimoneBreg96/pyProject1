@@ -21,7 +21,14 @@ class MainWindow(BoxLayout):
 
     def btn_clk(self):
         inputLabel = self.ids.inputLabel.text
+        if (inputLabel==""):
+            self.lbl.text = "Enter something!"
+            return 0
         self.lbl.text = str(fibonacci(int(inputLabel)))
+    
+    def clear(self):
+        self.lbl.text = ""
+        self.inputLabel.text = ""
 
 class MainPage(App):
     def build(self):
