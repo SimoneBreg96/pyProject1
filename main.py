@@ -12,7 +12,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
 import random
-from test import fibonacci
+from functionsRepository import *
 
 
 class MainWindow(BoxLayout):
@@ -20,15 +20,27 @@ class MainWindow(BoxLayout):
     result = ObjectProperty(None)
 
     def btn_clk(self):
-        inputLabel = self.ids.inputLabel.text
-        if (inputLabel==""):
-            self.lbl.text = "Enter something!"
+        distance = self.ids.distance.text
+        cost = self.ids.cost.text
+        consumption = self.ids.consumption.text
+        if (distance=="" or cost=="" or consumption==""):
+            self.result.text = "Enter something!"
             return 0
-        self.lbl.text = str(fibonacci(int(inputLabel)))
+        if(not(isfloat(distance)) or not(isfloat(cost)) or not(isfloat(consumption))):
+            self.result.text = "Only numbers are accepted as inputs!"
+            return 0
+        x = fuelPrice(float(distance),float(cost),float(consumption))
+        if(x<=0):
+            self.result.text = "Invalid input!"
+            return 0
+        self.result.text = str(x)
+        return 0
     
     def clear(self):
-        self.lbl.text = ""
-        self.inputLabel.text = ""
+        self.distance.text = ""
+        self.cost.text = ""
+        self.consumption.text = ""
+        self.result.text = ""
 
 class MainPage(App):
     def build(self):

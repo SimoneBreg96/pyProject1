@@ -1,21 +1,39 @@
 <MainWindow>:
     submit_button: submit_button
-    lbl: result
-    inputLabel: inputLabel
+    result: result
+    distance: distance
+    cost: cost
+    consumption: consumption
     BoxLayout:
         id: mainBox
         orientation: 'vertical'
         BoxLayout:
-            id: name
             size_hint_y: 0.2
             Label:
-                text: "Input"
+                text: "Distance"
             TextInput: 
                 text: ""
-                id: inputLabel
+                id: distance
+                multiline: False
+        BoxLayout:
+            size_hint_y: 0.2
+            Label:
+                text: "Cost"
+            TextInput: 
+                text: ""
+                id: cost
+                multiline: False
+        BoxLayout:
+            size_hint_y: 0.2
+            Label:
+                text: "Consumption"
+            TextInput: 
+                text: ""
+                id: consumption
                 multiline: False
         BoxLayout:
             id: buttons
+            size_hint_y: 0.4
             BoxLayout:
                 orientation: 'horizontal'
                 Button:
