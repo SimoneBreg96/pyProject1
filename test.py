@@ -17,6 +17,6 @@ def fibonacci(n):
         t_prev = temp
     return [t_prev,t]
 
-x = int(input("Enter a number: "))
-print("factorial:",factorial(x)) 
-print("Fibonacci previous, present and following number:", fibonacci(x))
+# x = int(input("Enter a number: "))
+# print("factorial:",factorial(x)) 
+# print("Fibonacci previous, present and following number:", fibonacci(x))

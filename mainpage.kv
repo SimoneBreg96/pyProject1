@@ -1,19 +1,23 @@
 <MainWindow>:
+    submit_button: submit_button
+    lbl: result
     BoxLayout:
         id: mainBox
         orientation: 'vertical'
         BoxLayout:
             id: name
             Label:
-                text: "Name"
-            TextInput:
-        BoxLayout:
-            id: surname
-            Label:
-                text: "Surname"
-            TextInput:
+                text: "Input"
+            TextInput: 
+                multiline: False
         BoxLayout:
             id: button
             Button:
+                id: submit_button
                 text: "Enter"
                 color: [1,0,0]
+                on_press:
+                    root.btn_clk()
+        Label:
+            id: result
+            text: "ehi"
