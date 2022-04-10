@@ -3,7 +3,7 @@ import kivy
 import kivymd
 kivy.require('2.0.0') # replace with your current kivy version !
 from kivy.app import App
-from kivy.properties import ObjectProperty
+from kivy.properties import ObjectProperty, NumericProperty, StringProperty
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
@@ -20,7 +20,8 @@ class MainWindow(BoxLayout):
     result = ObjectProperty(None)
 
     def btn_clk(self):
-        self.lbl.text = str(fibonacci(10))
+        inputLabel = self.ids.inputLabel.text
+        self.lbl.text = str(fibonacci(int(inputLabel)))
 
 class MainPage(App):
     def build(self):
