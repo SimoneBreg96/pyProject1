@@ -24,13 +24,14 @@ class MainWindow(BoxLayout,Screen):
         distance = self.ids.distance.text
         cost = self.ids.cost.text
         consumption = self.ids.consumption.text
+        passengers = self.ids.passengers.text
         if (distance=="" or cost=="" or consumption==""):
             self.result.text = "Enter something!"
             return 0
         if(not(isfloat(distance)) or not(isfloat(cost)) or not(isfloat(consumption))):
             self.result.text = "Only numbers are accepted as inputs!"
             return 0
-        x = fuelPrice(float(distance),float(cost),float(consumption))
+        x = fuelPrice(float(distance),float(cost),float(consumption))/float(passengers)
         if(x<=0):
             self.result.text = "Invalid input!"
             return 0
@@ -42,6 +43,7 @@ class MainWindow(BoxLayout,Screen):
         self.cost.text = ""
         self.consumption.text = ""
         self.result.text = ""
+        self.ids.passengers.text = self.ids.passengers.values[0]
 
 class SecondWindow(Screen):
     pass

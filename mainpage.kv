@@ -9,6 +9,7 @@ WindowManager:
     distance: distance
     cost: cost
     consumption: consumption
+    passengers: passengers
     BoxLayout:
         id: mainBox
         orientation: 'vertical'
@@ -36,6 +37,14 @@ WindowManager:
                 text: ""
                 id: consumption
                 multiline: False
+        BoxLayout:
+            size_hint_y: 0.2
+            Label:
+                text: "Passengers"
+            Spinner:
+                id: passengers
+                text: "1"
+                values: ["1","2","3","4","5"]
         BoxLayout:
             id: buttons
             size_hint_y: 0.4
