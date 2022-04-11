@@ -1,4 +1,9 @@
+WindowManager:
+    MainWindow:
+    SecondWindow:
+
 <MainWindow>:
+    name: "main"
     submit_button: submit_button
     result: result
     distance: distance
@@ -50,3 +55,19 @@
             Label:
                 id: result
                 text: ""
+        BoxLayout:
+            Button:
+                size_hint_y: 0.2
+                id: nextWindow
+                text: "Next window"
+                on_release: 
+                    app.root.current = "second"
+
+<SecondWindow>:
+    name: "second"
+    BoxLayout:
+        Button: 
+            text: "Go back"
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"

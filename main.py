@@ -11,11 +11,12 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.lang import Builder
 import random
 from functionsRepository import *
 
-
-class MainWindow(BoxLayout):
+class MainWindow(BoxLayout,Screen):
     submit_button = ObjectProperty(None)
     result = ObjectProperty(None)
 
@@ -42,9 +43,17 @@ class MainWindow(BoxLayout):
         self.consumption.text = ""
         self.result.text = ""
 
+class SecondWindow(Screen):
+    pass
+
+class WindowManager(ScreenManager):
+    pass
+
+kv = Builder.load_file("mainpage.kv")
+
 class MainPage(App):
     def build(self):
-        return MainWindow()
+        return kv
 
 MainPage().run()
 # print(fibonacci(10))
