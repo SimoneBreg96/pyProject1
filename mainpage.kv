@@ -9,8 +9,14 @@ WindowManager:
         orientation: "vertical"
         BoxLayout:
             size_hint_y: 0.2
+            orientation: "vertical"
             Button:
                 text: "Fuel cost computation"
+                on_release:
+                    app.root.current = "fuelCost"
+                    root.manager.transition.direction = "left"
+            Button:
+                text: "Another function..."
                 on_release:
                     app.root.current = "fuelCost"
                     root.manager.transition.direction = "left"
