@@ -17,6 +17,9 @@ import random
 from functionsRepository import *
 
 class MainWindow(BoxLayout,Screen):
+    pass
+
+class FuelCost(BoxLayout,Screen):
     submit_button = ObjectProperty(None)
     result = ObjectProperty(None)
 
@@ -45,9 +48,8 @@ class MainWindow(BoxLayout,Screen):
         self.result.text = ""
         self.ids.passengers.text = self.ids.passengers.values[0]
 
-class SecondWindow(Screen):
+class ThirdWindow(Screen):
     pass
-
 class WindowManager(ScreenManager):
     pass
 

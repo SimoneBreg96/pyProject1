@@ -1,9 +1,23 @@
 WindowManager:
     MainWindow:
-    SecondWindow:
+    FuelCost:
+    ThirdWindow:
 
 <MainWindow>:
     name: "main"
+    BoxLayout:
+        orientation: "vertical"
+        BoxLayout:
+            size_hint_y: 0.2
+            Button:
+                text: "Fuel cost computation"
+                on_release:
+                    app.root.current = "fuelCost"
+                    root.manager.transition.direction = "left"
+        BoxLayout:
+
+<FuelCost>:
+    name: "fuelCost"
     submit_button: submit_button
     result: result
     distance: distance
@@ -68,12 +82,13 @@ WindowManager:
             Button:
                 size_hint_y: 0.2
                 id: nextWindow
-                text: "Next window"
+                text: "Home"
                 on_release: 
-                    app.root.current = "second"
+                    app.root.current = "main"
+                    root.manager.transition.direction = "right"
 
-<SecondWindow>:
-    name: "second"
+<ThirdWindow>:
+    name: "third"
     BoxLayout:
         Button: 
             text: "Go back"
