@@ -1,7 +1,7 @@
 WindowManager:
     MainWindow:
     FuelCost:
-    ThirdWindow:
+    TipTapToe:
 
 <MainWindow>:
     name: "main"
@@ -14,6 +14,11 @@ WindowManager:
                 text: "Fuel cost computation"
                 on_release:
                     app.root.current = "fuelCost"
+                    root.manager.transition.direction = "left"
+            Button:
+                text: "TipTapToe"
+                on_release:
+                    app.root.current = "tipTapToe"
                     root.manager.transition.direction = "left"
             Button:
                 text: "Another function..."
@@ -93,8 +98,8 @@ WindowManager:
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
 
-<ThirdWindow>:
-    name: "third"
+<TipTapToe>:
+    name: "tipTapToe"
     BoxLayout:
         Button: 
             text: "Go back"

@@ -15,6 +15,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 import random
 from functionsRepository import *
+import TipTapToe
 
 class MainWindow(BoxLayout,Screen):
     pass
