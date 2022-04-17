@@ -49,7 +49,7 @@ class FuelCost(BoxLayout,Screen):
         self.result.text = ""
         self.ids.passengers.text = self.ids.passengers.values[0]
 
-class ThirdWindow(Screen):
+class TipTapToe(Screen):
     pass
 class WindowManager(ScreenManager):
     pass
@@ -61,5 +61,3 @@ class MainPage(App):
         return kv
 
 MainPage().run()
-# print(fibonacci(10))
-# BoxLayoutApp().run()
