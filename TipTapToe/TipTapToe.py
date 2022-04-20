@@ -38,10 +38,16 @@ class TipTapToe(Screen):
             self.checkerboard.append(temp)
         self.player1 = Player(1)
         self.player2 = Player(2)
-        self.currPlayer = 1    
+        self.currPlayer = random.randint(1,2)    
+        self.ids.message.text = "Player" + str(self.currPlayer) + "'s turn"
     
     # sets the square [x,y] as occupied by playerID
     def assign(self,x,y,playerID=-1):
+        if(self.checkerboard[x][y].status!=0):
+            if(playerID==-1):
+                return [ False , self.currPlayer ]
+            else:
+                return [ False , playerID ]
         if (playerID==-1):
             playerID = self.currPlayer
         self.checkerboard[x][y].status = playerID
@@ -107,6 +113,7 @@ class TipTapToe(Screen):
                 sum += self.checkerboard[2-i][i].status
         return sum==3*playerID 
 
+    # prints the status of the checkerboard
     def printStatus(self):
         s = ""
         for i in range(3):
@@ -114,6 +121,21 @@ class TipTapToe(Screen):
                 s += " " + str(self.checkerboard[i][j].status)
             s += "\n"
         print(s)
+
+    # sets a sign on the checkerboard depending on the current player
+    def writeOnCheckerboard(self,x,y): 
+        playerID = 3-self.currPlayer 
+        targetStr = "r"+str(x)+"c"+str(y)
+        if(x<0 or x>2 or y<0 or y>2 or (self.ids[targetStr].text == "X") or (self.ids[targetStr].text == "O")):
+            return False
+        if (playerID==1):
+            self.ids[targetStr].text = "X"
+        elif (playerID==2):
+            self.ids[targetStr].text = "O"
+        else:
+            return False
+        return True
+        
 
 # player1 = 1
 # player2 = 2

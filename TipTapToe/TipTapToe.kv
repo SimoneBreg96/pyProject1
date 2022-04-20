@@ -9,6 +9,7 @@
     r2c0: r1c0
     r2c1: r2c1
     r2c2: r2c2
+    message: message
     BoxLayout:
         orientation: 'vertical'
         GridLayout: 
@@ -20,37 +21,74 @@
                 on_release:
                     root.assign(0,0)
                     root.printStatus()
+                    root.writeOnCheckerboard(0,0)
             Button:
                 id: r0c1
                 text: ""
                 on_release:
                     root.assign(0,1)
                     root.printStatus()
+                    root.writeOnCheckerboard(0,1)
             Button:
                 id: r0c2
                 text: ""
+                on_release:
+                    root.assign(0,2)
+                    root.printStatus()
+                    root.writeOnCheckerboard(0,2)
             Button:
                 id: r1c0
                 text: ""
+                on_release:
+                    root.assign(1,0)
+                    root.printStatus()
+                    root.writeOnCheckerboard(1,0)
             Button:
                 id: r1c1
                 text: ""
+                on_release:
+                    root.assign(1,1)
+                    root.printStatus()
+                    root.writeOnCheckerboard(1,1)
             Button:
                 id: r1c2
                 text: ""
+                on_release:
+                    root.assign(1,2)
+                    root.printStatus()    
+                    root.writeOnCheckerboard(1,2)
             Button:
                 id: r2c0
                 text: ""
+                on_release:
+                    root.assign(2,0)
+                    root.printStatus()
+                    root.writeOnCheckerboard(2,0)
             Button:
                 id: r2c1
                 text: ""
+                on_release:
+                    root.assign(2,1)
+                    root.printStatus()
+                    root.writeOnCheckerboard(2,1)
             Button:
                 id: r2c2
                 text: ""
+                on_release:
+                    root.assign(2,2)
+                    root.printStatus()
+                    root.writeOnCheckerboard(2,2)
+        Label:
+            size_hint_y: 0.1
+            id: message
+            text: ""
+        Label:
+            size_hint_y: 0.1
+            text: ""
         Button:
-            size_hint_y: 0.2
+            size_hint_y: 0.1
             id: nextWindow
             text: "Home"
-            on_release: 
+            on_release:
                 app.root.current = "main"
                 root.manager.transition.direction = "right"
