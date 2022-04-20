@@ -1,0 +1,56 @@
+<TipTapToe>:
+    name: "tipTapToe"
+    r0c0: r0c0
+    r0c1: r0c1
+    r0c2: r0c2
+    r1c0: r1c0
+    r1c1: r1c1
+    r1c2: r1c2
+    r2c0: r1c0
+    r2c1: r2c1
+    r2c2: r2c2
+    BoxLayout:
+        orientation: 'vertical'
+        GridLayout: 
+            cols: 3
+            padding: 100
+            Button:
+                id: r0c0
+                text: ""
+                on_release:
+                    root.assign(0,0)
+                    root.printStatus()
+            Button:
+                id: r0c1
+                text: ""
+                on_release:
+                    root.assign(0,1)
+                    root.printStatus()
+            Button:
+                id: r0c2
+                text: ""
+            Button:
+                id: r1c0
+                text: ""
+            Button:
+                id: r1c1
+                text: ""
+            Button:
+                id: r1c2
+                text: ""
+            Button:
+                id: r2c0
+                text: ""
+            Button:
+                id: r2c1
+                text: ""
+            Button:
+                id: r2c2
+                text: ""
+        Button:
+            size_hint_y: 0.2
+            id: nextWindow
+            text: "Home"
+            on_release: 
+                app.root.current = "main"
+                root.manager.transition.direction = "right"

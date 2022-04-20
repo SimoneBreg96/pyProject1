@@ -1,4 +1,18 @@
-import numpy as np
+import kivy
+import kivymd
+kivy.require('2.0.0') # replace with your current kivy version !
+from kivy.app import App
+from kivy.properties import ObjectProperty, NumericProperty, StringProperty
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+from kivy.uix.textinput import TextInput
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.widget import Widget
+from kivy.uix.popup import Popup
+from kivy.uix.floatlayout import FloatLayout
+from kivy.uix.screenmanager import ScreenManager, Screen
+from kivy.lang import Builder
+import random
 
 class Player:
     def __init__(self,id):
@@ -13,8 +27,9 @@ class Square:
     def clear(self):
         self.status = 0
 
-class Checkerboard:
-    def __init__(self):
+class TipTapToe(Screen):
+    def __init__(self,**kwargs):
+        super().__init__()
         self.checkerboard = []
         for i in range(3):
             temp = []
@@ -100,20 +115,20 @@ class Checkerboard:
             s += "\n"
         print(s)
 
-player1 = 1
-player2 = 2
-chk = Checkerboard()
-chk.assign(0, 0, player1)
-chk.assign(2, 2, player1)
-chk.assign(1, 0, player1)
-for i in range(0,3):
-    for j in range(0,3):
-        toClear = chk.checkerboard[i][j].status==0
-        win = chk.assign(i, j, player1)
-        chk.printStatus()
-        print(win,"\n----")
-        if(toClear):
-            chk.clear(i,j)
+# player1 = 1
+# player2 = 2
+# chk = Checkerboard()
+# chk.assign(0, 0, player1)
+# chk.assign(2, 2, player1)
+# chk.assign(1, 0, player1)
+# for i in range(0,3):
+#     for j in range(0,3):
+#         toClear = chk.checkerboard[i][j].status==0
+#         win = chk.assign(i, j, player1)
+#         chk.printStatus()
+#         print(win,"\n----")
+#         if(toClear):
+#             chk.clear(i,j)
 
 # chk.assign(0, 0, player1)
 # chk.assign(0, 2, player1)

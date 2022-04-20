@@ -1,3 +1,4 @@
+#:include TipTapToe/TipTapToe.kv
 WindowManager:
     MainWindow:
     FuelCost:
@@ -97,12 +98,3 @@ WindowManager:
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
-
-<TipTapToe>:
-    name: "tipTapToe"
-    BoxLayout:
-        Button: 
-            text: "Go back"
-            on_release:
-                app.root.current = "main"
-                root.manager.transition.direction = "right"

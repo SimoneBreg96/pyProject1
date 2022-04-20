@@ -14,8 +14,8 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 import random
-from functionsRepository import *
-import TipTapToe
+from functionsRepository1 import *
+import TipTapToe.TipTapToe
 
 class MainWindow(BoxLayout,Screen):
     pass
