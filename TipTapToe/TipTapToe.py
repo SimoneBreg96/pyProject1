@@ -38,11 +38,30 @@ class TipTapToe(Screen):
             self.checkerboard.append(temp)
         self.player1 = Player(1)
         self.player2 = Player(2)
-        self.currPlayer = random.randint(1,2)    
-        self.ids.message.text = "Player" + str(self.currPlayer) + "'s turn"
+        self.currPlayer = random.randint(1,2)
+        self.isStarted = False  
+    
+    def disableStartMSG(self,dis):
+        self.ids.startingMsg.disabled = dis
+        if(dis):
+            self.ids.startingMsg.color = [0.1,0.1,0.1]
+            self.ids.message.text = "Player " + str(self.currPlayer) + "'s turn"
+            for i in range(0,3):
+                for j in range(0,3):
+                    self.ids["r"+str(i)+"c"+str(j)].disabled = False
+        else:
+            self.ids.startingMsg.color = [1,1,1]
+            self.ids.message.text = ""
+        self.isStarted = dis
     
     # sets the square [x,y] as occupied by playerID
     def assign(self,x,y,playerID=-1):
+        if(not self.isStarted):
+            for i in range(0,3):
+                for j in range(0,3):
+                    self.ids["r"+str(i)+"c"+str(j)].disabled = True
+            self.ids.startingMsg.color = [1,0,0]
+            return
         if(self.checkerboard[x][y].status!=0):
             if(playerID==-1):
                 return [ False , self.currPlayer ]
@@ -51,10 +70,22 @@ class TipTapToe(Screen):
         if (playerID==-1):
             playerID = self.currPlayer
         self.checkerboard[x][y].status = playerID
+        targetStr = "r"+str(x)+"c"+str(y)
+        self.ids[targetStr].text = "ehi"
+        if (playerID==1):
+            self.ids[targetStr].text = "X"
+        elif (playerID==2):
+            self.ids[targetStr].text = "O"
         check = self.checkWin(x, y, playerID)
         if(check):
+            # self.message.text = "Player" + str(playerID) + " wins!"
+            self.ids.message.text = f"Player{playerID} wins!"
+            for i in range(0,3):
+                for j in range(0,3):
+                    self.ids["r"+str(i)+"c"+str(j)].disabled = True
             return [ True , playerID ]
         self.currPlayer = 3-playerID
+        self.ids.message.text = "Player " + str(self.currPlayer) + "'s turn"
         return [ False , playerID ]
 
     # clear the checkerboard
@@ -74,6 +105,12 @@ class TipTapToe(Screen):
         for i in range( mx , Mx ):
             for j in range( my , My ):
                 self.checkerboard[i][j].clear()
+                self.ids["r"+str(i)+"c"+str(j)].text = ""
+                self.currPlayer = random.randint(1,2)
+                self.ids.message.text = "Player " + str(self.currPlayer) + "'s turn"
+                self.ids["r"+str(i)+"c"+str(j)].disabled = False
+        if(mx==0 and my==0 and Mx==3 and My==3):
+            self.isStarted = True
     
     # check if the current move causes a match win
     def checkWin(self,x,y,playerID=-1):
@@ -121,6 +158,7 @@ class TipTapToe(Screen):
                 s += " " + str(self.checkerboard[i][j].status)
             s += "\n"
         print(s)
+        print(self.isStarted)
 
     # sets a sign on the checkerboard depending on the current player
     def writeOnCheckerboard(self,x,y): 
