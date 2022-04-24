@@ -76,7 +76,10 @@ class Square100(Screen):
         self.ids["r"+str(self.curr.r)+"c"+str(self.curr.c)].text = ""
         self.count -= 1
         self.history.pop()
-        prev = self.history[-1]
+        if(self.history!=[]):
+            prev = self.history[-1]
+        else:
+            prev = [0,0]
         self.curr.r = prev[0]
         self.curr.c = prev[1]
         return True
