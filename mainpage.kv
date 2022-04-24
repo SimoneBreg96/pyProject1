@@ -1,8 +1,10 @@
 #:include TipTapToe/TipTapToe.kv
+#:include Square100/Square100.kv
 WindowManager:
     MainWindow:
     FuelCost:
     TipTapToe:
+    Square100:
 
 <MainWindow>:
     name: "main"
@@ -20,6 +22,11 @@ WindowManager:
                 text: "TipTapToe"
                 on_release:
                     app.root.current = "tipTapToe"
+                    root.manager.transition.direction = "left"
+            Button:
+                text: "Square100"
+                on_release:
+                    app.root.current = "square100"
                     root.manager.transition.direction = "left"
             Button:
                 text: "Another function..."

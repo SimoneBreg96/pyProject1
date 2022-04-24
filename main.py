@@ -16,6 +16,7 @@ from kivy.lang import Builder
 import random
 from functionsRepository1 import *
 import TipTapToe.TipTapToe
+import Square100.Square100
 
 class MainWindow(BoxLayout,Screen):
     pass
@@ -50,6 +51,8 @@ class FuelCost(BoxLayout,Screen):
         self.ids.passengers.text = self.ids.passengers.values[0]
 
 class TipTapToe(Screen):
+    pass
+class Square100(Screen):
     pass
 class WindowManager(ScreenManager):
     pass
