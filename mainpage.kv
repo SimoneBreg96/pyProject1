@@ -1,10 +1,13 @@
 #:include TipTapToe/TipTapToe.kv
 #:include Square100/Square100.kv
+#:include C5Team/C5Team.kv
 WindowManager:
     MainWindow:
     FuelCost:
+    Back:
     TipTapToe:
     Square100:
+    C5Team:
 
 <MainWindow>:
     name: "main"
@@ -29,9 +32,14 @@ WindowManager:
                     app.root.current = "square100"
                     root.manager.transition.direction = "left"
             Button:
+                text: "C5 team manager"
+                on_release:
+                    app.root.current = "c5Team"
+                    root.manager.transition.direction = "left"
+            Button:
                 text: "Another function..."
                 on_release:
-                    app.root.current = "fuelCost"
+                    app.root.current = "back"
                     root.manager.transition.direction = "left"
         BoxLayout:
 
@@ -105,3 +113,11 @@ WindowManager:
                 on_release: 
                     app.root.current = "main"
                     root.manager.transition.direction = "right"
+
+<Back>:
+    name: "back"
+    Button:
+        text: "Go Back"
+        on_release:
+            app.root.current = "main"
+            root.manager.transition.direction = "right"
