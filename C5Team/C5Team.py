@@ -54,40 +54,57 @@ class C5Team(Screen):
     
     def readExc(self):
         data = pd.read_excel('C5Team//Torneo2021.xlsx')
-        i = 0
+        i = 1
         Ginew = Team()
-        while( not pd.isna(data.values[i+1][2]) ):
-            Ginew.addPlayer(Player(data.values[i+1][2]))
+        while( not pd.isna(data.values[i][2]) ):
+            Ginew.addPlayer(Player(data.values[i][2]))
             i += 1
-        Ginew.printPlayers()
-
+        turns_r0 = 1
+        turns_c0 = 3
+        turns = []
+        for r in range(0,Ginew.getNumPlayers()):
+            turns.append( data.values[turns_r0+r][turns_c0+1:turns_c0+Ginew.getNumPlayers()+1] )
+        Ginew.setTurns(turns)
+        for i in Ginew.enteringPlayers(2):
+            print(i.getName())
+        for i in Ginew.leavingPlayers(2):
+            print(i.getName())
 
 # Player definition
 class Player:
     ID = 1
     def __init__(self,name="",turns=[]):
+        self.name = ""
+        self.turns = []
         if(name==""):
             self.name = "Player" + str(Player.ID)
             Player.ID += 1
         else:
-            self.name = name
-            self.turns = turns
+            for i in name:
+                if (not i=="\""):
+                    self.name += i
+            self.setTurns(turns)
     
     def setName(self,name):
         if(name==""):
             self.name = "Player" + str(Player.ID)
             Player.ID += 1
         else:
-            self.name = name
+            self.name = str(name)
 
     def setTurns(self,turns):
-        self.turns = turns
+        self.turns = []
+        for i in range(0,len(turns)):
+            self.turns.append( not pd.isna(turns[i]) )
 
     def getName(self):
-        return self.name
+        return str(self.name)
 
     def getTurns(self):
         return self.turns
+
+    def isPlayingTurn(self,turn):
+        return self.turns[turn]
 
 # Team definition
 class Team:
@@ -96,10 +113,68 @@ class Team:
         self.numPlayers = len(players)
         for i in range(0,self.numPlayers):
             self.players.append(Player(player[i]))
+        self.turnMatrix = []
+        turns = []
+        for r in range(0,self.numPlayers):
+            for c in range(0,self.numPlayers):
+                turns.append(False)
+            self.turnMatrix.append(turns)
+            turns = []
     
     def addPlayer(self,player):
         self.players.append(player)
+        self.numPlayers += 1
     
     def printPlayers(self):
         for i in self.players:
             print(i.getName())
+    
+    def getNumPlayers(self):
+        return self.numPlayers
+    
+    def setTurns(self,turns,name=""):
+        if(name==""):
+            for i in range(0,self.numPlayers):
+                self.players[i].setTurns(turns[i])
+                self.turnMatrix.append(self.players[i].getTurns())
+        else:
+            if(self.searchPlayer(name)[0]):
+                index = self.searchPlayer(name)[1]
+                self.turnMatrix[ index ] = self.players[index].getTurns()
+    
+    def getTurns(self):
+        return self.turnMatrix
+    
+    def searchPlayer(self,name):
+        for i in range(0,self.numPlayers):
+            if (self.players[i].getName()==name):
+                return [True , i ]
+        return [False , -1]
+
+    def getPlayersForTurn(self,turn):
+        if(turn<0 or turn>=self.numPlayers):
+            print("Error: invalid turn input")
+            return 0
+        players = []
+        for i in self.players:
+            if(i.isPlayingTurn(turn)):
+                players.append(i)
+        return players
+    
+    def enteringPlayers(self,turn):
+        currPlayers = self.getPlayersForTurn(turn)
+        nextPlayers = self.getPlayersForTurn(turn+1)
+        playersIn = []
+        for i in nextPlayers:
+            if (i not in currPlayers):
+                playersIn.append(i)
+        return playersIn
+    
+    def leavingPlayers(self,turn):
+        currPlayers = self.getPlayersForTurn(turn)
+        nextPlayers = self.getPlayersForTurn(turn+1)
+        playersOut = []
+        for i in currPlayers:
+            if (i not in nextPlayers):
+                playersOut.append(i)
+        return playersOut
