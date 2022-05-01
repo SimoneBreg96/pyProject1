@@ -22,4 +22,15 @@
                     root.reset()
         Label:
             id: clockLabel
-            font_size: '10sp'
+            font_size: '50sp'
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.2
+            Button:
+                id: readExcBtn
+                text: "Read Excel file"
+                on_release:
+                    root.readExc()
+        Label:
+            id: readExcLabel
+            font_size: '50sp'

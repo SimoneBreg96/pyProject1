@@ -13,6 +13,7 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
+import pandas as pd
 import math
 import time
 
@@ -33,6 +34,7 @@ class C5Team(Screen):
         self.duration = duration
         self.precision = precision
         self.isRunning = True
+        self.printTime()
         Clock.schedule_interval(self.count, self.precision)
     
     def count(self,dt):
@@ -49,3 +51,55 @@ class C5Team(Screen):
     def printTime(self):
         T = timeTransform(self.time)
         self.ids.clockLabel.text = str(T[0])+"' "+str(100+T[1])[1:3]+"''"
+    
+    def readExc(self):
+        data = pd.read_excel('C5Team//Torneo2021.xlsx')
+        i = 0
+        Ginew = Team()
+        while( not pd.isna(data.values[i+1][2]) ):
+            Ginew.addPlayer(Player(data.values[i+1][2]))
+            i += 1
+        Ginew.printPlayers()
+
+
+# Player definition
+class Player:
+    ID = 1
+    def __init__(self,name="",turns=[]):
+        if(name==""):
+            self.name = "Player" + str(Player.ID)
+            Player.ID += 1
+        else:
+            self.name = name
+            self.turns = turns
+    
+    def setName(self,name):
+        if(name==""):
+            self.name = "Player" + str(Player.ID)
+            Player.ID += 1
+        else:
+            self.name = name
+
+    def setTurns(self,turns):
+        self.turns = turns
+
+    def getName(self):
+        return self.name
+
+    def getTurns(self):
+        return self.turns
+
+# Team definition
+class Team:
+    def __init__(self,players=[]):
+        self.players = []
+        self.numPlayers = len(players)
+        for i in range(0,self.numPlayers):
+            self.players.append(Player(player[i]))
+    
+    def addPlayer(self,player):
+        self.players.append(player)
+    
+    def printPlayers(self):
+        for i in self.players:
+            print(i.getName())
