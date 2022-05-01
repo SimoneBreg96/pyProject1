@@ -13,33 +13,39 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 from kivy.clock import Clock
-import random
+import math
 import time
+
+def timeTransform(t,prec=2):
+    m = math.floor(t/60)
+    s = t-m*60
+    return [round(m,prec),round(s,prec)]
 
 class C5Team(Screen):
     def __init__(self,**kwargs):
         super().__init__()
         self.time = 0
-        self.t0 = 0
         self.duration = 0
         self.isRunning = False
         self.precision = 0
 
     def start(self,duration=3600,precision=1):
-        self.reset()
         self.duration = duration
         self.precision = precision
         self.isRunning = True
-        self.time = 0
         Clock.schedule_interval(self.count, self.precision)
     
     def count(self,dt):
         self.time = self.time+self.precision
-        self.ids.clockLabel.text = str(self.time)
+        self.printTime()
 
     def stop(self):
         Clock.unschedule(self.count)
 
     def reset(self):
-        self.t0 = 0
         self.time = 0
+        self.printTime()
+    
+    def printTime(self):
+        T = timeTransform(self.time)
+        self.ids.clockLabel.text = str(T[0])+"' "+str(100+T[1])[1:3]+"''"

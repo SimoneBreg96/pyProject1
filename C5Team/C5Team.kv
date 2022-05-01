@@ -4,6 +4,7 @@
         orientation: 'vertical'
         BoxLayout:
             orientation: 'horizontal'
+            size_hint_y: 0.2
             Button:
                 id: clockBtn
                 text: "Start"
@@ -14,5 +15,11 @@
                 text: "Stop"
                 on_release:
                     root.stop()
+            Button:
+                id: ResetBtn
+                text: "Reset"
+                on_release:
+                    root.reset()
         Label:
             id: clockLabel
+            font_size: '10sp'
