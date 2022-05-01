@@ -29,24 +29,50 @@ class C5Team(Screen):
         self.duration = 0
         self.isRunning = False
         self.precision = 0
+        self.turn = 0
+        self.team = []
 
     def start(self,duration=3600,precision=1):
+        self.readExc()
         self.duration = duration
         self.precision = precision
         self.isRunning = True
         self.printTime()
         Clock.schedule_interval(self.count, self.precision)
+        if (self.turn==0):
+            self.printInAndOut(0,True)
+        nChanges = self.team.getNumPlayers()
+        Clock.schedule_interval(self.printInAndOut, self.duration/nChanges)
     
     def count(self,dt):
         self.time = self.time+self.precision
         self.printTime()
+        if (self.time>=self.duration): 
+            self.stop()
+            return
+        
+    def printInAndOut(self,dt,first=False):
+        if(first):
+            turn = 0
+        else:
+            self.turn += 1
+            turn = self.turn 
+        inPlayers = self.team.enteringPlayers(turn)
+        labelText = ""
+        for i in inPlayers:
+            labelText += i.getName() + "\n"
+        self.ids.inPlayers.text = labelText
+            
 
     def stop(self):
         Clock.unschedule(self.count)
+        Clock.unschedule(self.printInAndOut)
 
     def reset(self):
         self.time = 0
+        self.turn = 0
         self.printTime()
+        self.printInAndOut(0,True)
     
     def printTime(self):
         T = timeTransform(self.time)
@@ -55,20 +81,16 @@ class C5Team(Screen):
     def readExc(self):
         data = pd.read_excel('C5Team//Torneo2021.xlsx')
         i = 1
-        Ginew = Team()
+        self.team = Team()
         while( not pd.isna(data.values[i][2]) ):
-            Ginew.addPlayer(Player(data.values[i][2]))
+            self.team.addPlayer(Player(data.values[i][2]))
             i += 1
         turns_r0 = 1
         turns_c0 = 3
         turns = []
-        for r in range(0,Ginew.getNumPlayers()):
-            turns.append( data.values[turns_r0+r][turns_c0+1:turns_c0+Ginew.getNumPlayers()+1] )
-        Ginew.setTurns(turns)
-        for i in Ginew.enteringPlayers(2):
-            print(i.getName())
-        for i in Ginew.leavingPlayers(2):
-            print(i.getName())
+        for r in range(0,self.team.getNumPlayers()):
+            turns.append( data.values[turns_r0+r][turns_c0+1:turns_c0+self.team.getNumPlayers()+1] )
+        self.team.setTurns(turns)
 
 # Player definition
 class Player:
@@ -154,7 +176,7 @@ class Team:
     def getPlayersForTurn(self,turn):
         if(turn<0 or turn>=self.numPlayers):
             print("Error: invalid turn input")
-            return 0
+            return []
         players = []
         for i in self.players:
             if(i.isPlayingTurn(turn)):
@@ -164,6 +186,8 @@ class Team:
     def enteringPlayers(self,turn):
         currPlayers = self.getPlayersForTurn(turn)
         nextPlayers = self.getPlayersForTurn(turn+1)
+        if (currPlayers==[] or nextPlayers==[]):
+            return []
         playersIn = []
         for i in nextPlayers:
             if (i not in currPlayers):
@@ -173,6 +197,8 @@ class Team:
     def leavingPlayers(self,turn):
         currPlayers = self.getPlayersForTurn(turn)
         nextPlayers = self.getPlayersForTurn(turn+1)
+        if (currPlayers==[] or nextPlayers==[]):
+            return []
         playersOut = []
         for i in currPlayers:
             if (i not in nextPlayers):

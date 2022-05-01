@@ -9,7 +9,7 @@
                 id: clockBtn
                 text: "Start"
                 on_release:
-                    root.start(10,1)
+                    root.start(7*3,1)
             Button:
                 id: StopBtn
                 text: "Stop"
@@ -24,13 +24,40 @@
             id: clockLabel
             font_size: '50sp'
         BoxLayout:
+            size_hint_y: 0.1
             orientation: 'horizontal'
+            Label:
+                background_color: (0,1,0,0.5)
+                color: [0,0,0]
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                text: "IN at the next turn:"
+            Label:
+                background_color: (1,0,0,0.5)
+                color: [1,1,1]
+                canvas.before:
+                    Color:
+                        rgba: self.background_color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                text: "OUT at the next turn:"
+        BoxLayout:
+            orientation: 'horizontal'
+            Label:
+                id: inPlayers
+                color: [0,1,0]
+            Label:
+                id: outPlayers
+                color: [0,1,0]
+        Button:
+            id: Home
             size_hint_y: 0.2
-            Button:
-                id: readExcBtn
-                text: "Read Excel file"
-                on_release:
-                    root.readExc()
-        Label:
-            id: readExcLabel
-            font_size: '50sp'
+            text: "Home"
+            on_release:
+                app.root.current = "main"
+                root.manager.transition.direction = "right"
