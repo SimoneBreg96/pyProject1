@@ -15,6 +15,7 @@ from kivy.lang import Builder
 from kivy.clock import Clock
 import pandas as pd
 import math
+import random
 import time
 
 def timeTransform(t,prec=2):
@@ -29,27 +30,55 @@ class C5Team(Screen):
         self.duration = 0
         self.isRunning = False
         self.precision = 0
+        self.gameEnd = False
         self.turn = 0
+        self.delay = 0
         self.team = []
+        self.HTBreak = False
+        self.readExc()
 
     def start(self,duration=3600,precision=1):
-        self.readExc()
         self.duration = duration
         self.precision = precision
+        if(self.HTBreak and not(self.isRunning)):
+            self.ids.currentPlayers.text = "Second half"
+        elif(not self.isRunning):
+            self.ids.currentPlayers.text = "First half"
         self.isRunning = True
+        self.HTBreak = False
+        self.gameEnd = False
         self.printTime()
-        Clock.schedule_interval(self.count, self.precision)
         if (self.turn==0):
             self.printInAndOut(0,True)
-        nChanges = self.team.getNumPlayers()
-        Clock.schedule_interval(self.printInAndOut, self.duration/nChanges)
+        if (self.delay>0):
+            Clock.schedule_once(self.scheduleInAndOut,self.delay)
+        else:
+            self.scheduleInAndOut(0)
+        Clock.schedule_interval(self.count, self.precision)
     
+    def scheduleInAndOut(self,dt):
+        if (self.delay>0):
+            self.printInAndOut(0)
+            self.delay=0
+        Clock.schedule_interval(self.printInAndOut, self.duration/self.team.getNumPlayers())
+
     def count(self,dt):
         self.time = self.time+self.precision
         self.printTime()
-        if (self.time>=self.duration): 
+        # if( self.time>=self.duration or (self.time>=self.duration/2 and self.time<sel and self.turn>self.team.getNumPlayers()/2) ):
+        if( self.turn>=self.team.getNumPlayers() or self.time>self.duration):
+            self.ids.currentPlayers.text = "Game end"
+            self.gameEnd = True
             self.stop()
-            return
+        # elif(self.time>=self.duration/2 or (self.time<self.duration/2 and self.HTBreak)):
+        #     self.ids.currentPlayers.text = "Second half"
+        elif (self.time>(self.duration-self.precision)/2 and self.time<=(self.duration+self.precision)/2 and self.turn<=math.ceil(self.team.getNumPlayers()/2)): 
+            self.ids.currentPlayers.text = "HT break: press \"Start\"!"
+            self.HTBreak = True
+            self.delay = (self.turn+1)*self.duration/self.team.getNumPlayers()-self.time
+            self.stop()
+        # elif (self.time>=self.duration/2 and not(self.HTBreak)):
+        #     self.ids.currentPlayers.text = "First half"
         
     def printInAndOut(self,dt,first=False):
         if(first):
@@ -57,22 +86,43 @@ class C5Team(Screen):
         else:
             self.turn += 1
             turn = self.turn 
-        inPlayers = self.team.enteringPlayers(turn)
+        inPlayers = self.team.enteringPlayers(turn)             # IN
         labelText = ""
         for i in inPlayers:
             labelText += i.getName() + "\n"
-        self.ids.inPlayers.text = labelText
-            
+        self.ids.inPlayers.text = labelText     
+        outPlayers = self.team.leavingPlayers(turn)             # OUT
+        labelText = ""
+        for i in outPlayers:
+            labelText += i.getName() + "\n"
+        self.ids.outPlayers.text = labelText
+        currPlayers = self.team.getPlayersForTurn(turn)         # CURRENT
+        random.shuffle(currPlayers)
+        if(len(currPlayers)==4):
+            self.ids.back.text = currPlayers[0].getName()
+            self.ids.leftWing.text = currPlayers[1].getName()
+            self.ids.rightWing.text = currPlayers[2].getName()
+            self.ids.pivot.text = currPlayers[3].getName()
 
     def stop(self):
         Clock.unschedule(self.count)
         Clock.unschedule(self.printInAndOut)
+        self.isRunning = False
 
     def reset(self):
         self.time = 0
-        self.turn = 0
+        self.gameEnd = False
+        if( not self.HTBreak):
+            self.turn = 0
+            self.delay = 0
+            self.printInAndOut(0,True)
+        print(self.turn)
         self.printTime()
-        self.printInAndOut(0,True)
+        if( self.isRunning ):
+            Clock.unschedule(self.count)
+            Clock.unschedule(self.printInAndOut)
+            Clock.schedule_interval(self.count,self.precision)
+            Clock.schedule_interval(self.printInAndOut,self.duration/self.team.getNumPlayers())
     
     def printTime(self):
         T = timeTransform(self.time)

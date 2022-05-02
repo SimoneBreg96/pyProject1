@@ -22,7 +22,8 @@
                     root.reset()
         Label:
             id: clockLabel
-            font_size: '50sp'
+            font_size: '90sp'
+            color: [255/255,165/255,0/255]
         BoxLayout:
             size_hint_y: 0.1
             orientation: 'horizontal'
@@ -37,8 +38,11 @@
                         pos: self.pos
                 text: "IN at the next turn:"
             Label:
+                id: currentPlayers
+                color: [0.6,0.6,1]
+            Label:
                 background_color: (1,0,0,0.5)
-                color: [1,1,1]
+                color: [0,0,0]
                 canvas.before:
                     Color:
                         rgba: self.background_color
@@ -51,9 +55,26 @@
             Label:
                 id: inPlayers
                 color: [0,1,0]
+            GridLayout: 
+                cols: 3
+                Label:
+                Label:
+                    id: pivot
+                Label:
+
+                Label:
+                    id: leftWing
+                Label:
+                Label:
+                    id: rightWing
+
+                Label:
+                Label:
+                    id: back
+                Label:
             Label:
                 id: outPlayers
-                color: [0,1,0]
+                color: [1,0,0]
         Button:
             id: Home
             size_hint_y: 0.2
