@@ -42,7 +42,7 @@ class C5Team(Screen):
         self.precision = precision
         if(self.HTBreak and not(self.isRunning)):
             self.ids.currentPlayers.text = "Second half"
-        elif(not self.isRunning):
+        else:
             self.ids.currentPlayers.text = "First half"
         self.isRunning = True
         self.HTBreak = False
@@ -65,20 +65,15 @@ class C5Team(Screen):
     def count(self,dt):
         self.time = self.time+self.precision
         self.printTime()
-        # if( self.time>=self.duration or (self.time>=self.duration/2 and self.time<sel and self.turn>self.team.getNumPlayers()/2) ):
         if( self.turn>=self.team.getNumPlayers() or self.time>self.duration):
             self.ids.currentPlayers.text = "Game end"
             self.gameEnd = True
             self.stop()
-        # elif(self.time>=self.duration/2 or (self.time<self.duration/2 and self.HTBreak)):
-        #     self.ids.currentPlayers.text = "Second half"
         elif (self.time>(self.duration-self.precision)/2 and self.time<=(self.duration+self.precision)/2 and self.turn<=math.ceil(self.team.getNumPlayers()/2)): 
             self.ids.currentPlayers.text = "HT break: press \"Start\"!"
             self.HTBreak = True
             self.delay = (self.turn+1)*self.duration/self.team.getNumPlayers()-self.time
             self.stop()
-        # elif (self.time>=self.duration/2 and not(self.HTBreak)):
-        #     self.ids.currentPlayers.text = "First half"
         
     def printInAndOut(self,dt,first=False):
         if(first):
@@ -121,8 +116,7 @@ class C5Team(Screen):
         if( self.isRunning ):
             Clock.unschedule(self.count)
             Clock.unschedule(self.printInAndOut)
-            Clock.schedule_interval(self.count,self.precision)
-            Clock.schedule_interval(self.printInAndOut,self.duration/self.team.getNumPlayers())
+            self.start(self.duration,self.precision)
     
     def printTime(self):
         T = timeTransform(self.time)

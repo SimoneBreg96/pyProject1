@@ -24,6 +24,10 @@
             id: clockLabel
             font_size: '90sp'
             color: [255/255,165/255,0/255]
+        Label:
+            id: currentPlayers
+            size_hint_y: 0.1
+            color: [0.6,0.6,1]
         BoxLayout:
             size_hint_y: 0.1
             orientation: 'horizontal'
@@ -36,10 +40,8 @@
                     Rectangle:
                         size: self.size
                         pos: self.pos
-                text: "IN at the next turn:"
+                text: "next turn IN:"
             Label:
-                id: currentPlayers
-                color: [0.6,0.6,1]
             Label:
                 background_color: (1,0,0,0.5)
                 color: [0,0,0]
@@ -49,7 +51,7 @@
                     Rectangle:
                         size: self.size
                         pos: self.pos
-                text: "OUT at the next turn:"
+                text: "next turn OUT:"
         BoxLayout:
             orientation: 'horizontal'
             Label:
