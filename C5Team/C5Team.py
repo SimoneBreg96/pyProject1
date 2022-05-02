@@ -19,6 +19,8 @@ import random
 import time
 
 def timeTransform(t,prec=2):
+    if(t<0):
+        t=-t
     m = math.floor(t/60)
     s = t-m*60
     return [round(m,prec),round(s,prec)]
@@ -35,6 +37,7 @@ class C5Team(Screen):
         self.delay = 0
         self.team = []
         self.HTBreak = False
+        self.isST = False
         self.readExc()
 
     def start(self,duration=3600,precision=1):
@@ -47,7 +50,8 @@ class C5Team(Screen):
         self.isRunning = True
         self.HTBreak = False
         self.gameEnd = False
-        self.printTime()
+        if(not self.isST):
+            self.printTime()
         if (self.turn==0):
             self.printInAndOut(0,True)
         if (self.delay>0):
@@ -59,7 +63,7 @@ class C5Team(Screen):
     def scheduleInAndOut(self,dt):
         if (self.delay>0):
             self.printInAndOut(0)
-            self.delay=0
+            # self.delay=0
         Clock.schedule_interval(self.printInAndOut, self.duration/self.team.getNumPlayers())
 
     def count(self,dt):
@@ -68,11 +72,14 @@ class C5Team(Screen):
         if( self.turn>=self.team.getNumPlayers() or self.time>self.duration):
             self.ids.currentPlayers.text = "Game end"
             self.gameEnd = True
+            self.ids.remainingTime.text = "0' 00''"
+            self.isST = True
             self.stop()
         elif (self.time>(self.duration-self.precision)/2 and self.time<=(self.duration+self.precision)/2 and self.turn<=math.ceil(self.team.getNumPlayers()/2)): 
             self.ids.currentPlayers.text = "HT break: press \"Start\"!"
             self.HTBreak = True
             self.delay = (self.turn+1)*self.duration/self.team.getNumPlayers()-self.time
+            print("delay:",self.delay)
             self.stop()
         
     def printInAndOut(self,dt,first=False):
@@ -107,27 +114,42 @@ class C5Team(Screen):
     def reset(self):
         self.time = 0
         self.gameEnd = False
+        self.printTime()
         if( not self.HTBreak):
             self.turn = 0
             self.delay = 0
-            self.printInAndOut(0,True)
-        print(self.turn)
-        self.printTime()
+            self.printInAndOut(0,True)  
+            self.isST = False      
         if( self.isRunning ):
             Clock.unschedule(self.count)
             Clock.unschedule(self.printInAndOut)
             self.start(self.duration,self.precision)
+            self.isST = False
     
     def printTime(self):
         T = timeTransform(self.time)
+        self.ids.changeAtMin.text = str(self.turn)
         self.ids.clockLabel.text = str(T[0])+"' "+str(100+T[1])[1:3]+"''"
+        if(self.isRunning):
+            if( self.time<self.duration/2 and self.turn>math.floor(self.team.getNumPlayers()/2) ):
+                c = -(  (self.turn+1-math.ceil(self.team.getNumPlayers()/2))*self.duration/self.team.getNumPlayers() - self.time+self.delay  )
+                T = timeTransform( c ,0)
+                print(self.turn,self.time,c,(self.turn+1)*self.duration/self.team.getNumPlayers(),T, self.delay)
+            else:
+                T = timeTransform( self.time-(self.turn+1)*self.duration/self.team.getNumPlayers() ,0)
+            if(T==[0,0] or (60*T[0]+T[1]>self.duration/self.team.getNumPlayers()) ):
+                T = timeTransform(-self.duration/self.team.getNumPlayers())
+            if(self.gameEnd):
+                self.ids.remainingTime.text = "0' 00''"
+            else:
+                self.ids.remainingTime.text = "-" + str(T[0])+"' "+str(100+T[1])[1:3]+"'' to change"
     
     def readExc(self):
         data = pd.read_excel('C5Team//Torneo2021.xlsx')
         i = 1
         self.team = Team()
-        while( not pd.isna(data.values[i][2]) ):
-            self.team.addPlayer(Player(data.values[i][2]))
+        while( not pd.isna(data.values[i][3]) ):
+            self.team.addPlayer(Player(data.values[i][3]))
             i += 1
         turns_r0 = 1
         turns_c0 = 3
@@ -219,7 +241,7 @@ class Team:
 
     def getPlayersForTurn(self,turn):
         if(turn<0 or turn>=self.numPlayers):
-            print("Error: invalid turn input")
+            # print("Error: invalid turn input")
             return []
         players = []
         for i in self.players:

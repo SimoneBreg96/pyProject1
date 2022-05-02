@@ -9,7 +9,7 @@
                 id: clockBtn
                 text: "Start"
                 on_release:
-                    root.start(7*3,1)
+                    root.start(7*5,1)
             Button:
                 id: StopBtn
                 text: "Stop"
@@ -21,9 +21,29 @@
                 on_release:
                     root.reset()
         Label:
+            size_hint_y: 0.1
+        BoxLayout:
+            orientation: 'horizontal'
+            size_hint_y: 0.1
+            Label:
+                valign: 'bottom'
+                halign: 'right'
+                id: changeAtMin
+                color: [255/255,255/255,0/255]
+            Label:
+                valign: 'bottom'
+                halign: 'left'         
+                id: remainingTime
+                color: [255/255,255/255,0/255]     
+       
+        Label:
+            size_hint_y: 0.3
+            valign: 'top'
             id: clockLabel
             font_size: '90sp'
             color: [255/255,165/255,0/255]
+        Label:
+            size_hint_y: 0.1
         Label:
             id: currentPlayers
             size_hint_y: 0.1
